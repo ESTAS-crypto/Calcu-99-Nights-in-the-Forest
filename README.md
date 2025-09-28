@@ -40,7 +40,8 @@ Sekarang	Base Step	Multiplier	Step Efektif	Contoh Angka Cantik Terdekat
 1141	9	1	9	(angka cantik di atas 1141 yang (a - 1141) % 9 == 0)
 
 📸 Screenshot
-(Tambahkan gambar tampilan aplikasi di sini, misalnya screenshot.png)
+<img width="1226" height="927" alt="image" src="https://github.com/user-attachments/assets/e5be3e6d-ffc3-4683-b863-7137b066d415" />
+
 
 🗂 Struktur Project
 bash
