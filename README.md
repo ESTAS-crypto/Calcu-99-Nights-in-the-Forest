@@ -47,6 +47,7 @@ Sekarang	Base Step	Multiplier	Step Efektif	Contoh Angka Cantik Terdekat
 bash
 Salin kode
 .
+
 ├── index.html        # File utama, sudah menyertakan HTML, CSS & JS
 
 ├── style.css         # (opsional, jika kamu pisah CSS)
