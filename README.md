@@ -48,7 +48,9 @@ bash
 Salin kode
 .
 ├── index.html        # File utama, sudah menyertakan HTML, CSS & JS
+
 ├── style.css         # (opsional, jika kamu pisah CSS)
+
 └── script.js         # (opsional, jika kamu pisah JS)
 📝 Catatan & Tips
 Pencarian angka cantik dibatasi maxSearch untuk menjaga performa
