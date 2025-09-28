@@ -1,722 +1,146 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>99 Nights in the Forest - Calculator</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-            min-height: 100vh;
-            color: #e8f5e9;
-            padding: 20px;
-            position: relative;
-            overflow-x: hidden;
-        }
-        /* Forest background effect */
-        
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: radial-gradient(circle at 20% 50%, rgba(50, 205, 50, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 30%, rgba(34, 139, 34, 0.1) 0%, transparent 50%), radial-gradient(circle at 40% 80%, rgba(0, 100, 0, 0.1) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: 0;
-        }
-        
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-        
-        h1 {
-            text-align: center;
-            color: #81c784;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            margin-bottom: 10px;
-            font-size: 2.5em;
-        }
-        
-        .subtitle {
-            text-align: center;
-            color: #a5d6a7;
-            margin-bottom: 30px;
-            font-size: 1.1em;
-        }
-        
-        .main-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-        
-        @media (max-width: 968px) {
-            .main-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        .panel {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(129, 199, 132, 0.3);
-            border-radius: 12px;
-            padding: 25px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-        }
-        
-        .panel h2 {
-            color: #81c784;
-            margin-bottom: 20px;
-            font-size: 1.5em;
-            border-bottom: 2px solid rgba(129, 199, 132, 0.3);
-            padding-bottom: 10px;
-        }
-        
-        .input-group {
-            margin-bottom: 20px;
-        }
-        
-        .input-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #b2dfdb;
-            font-weight: 500;
-        }
-        
-        .input-group input,
-        .input-group select {
-            width: 100%;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(129, 199, 132, 0.5);
-            border-radius: 6px;
-            color: #e8f5e9;
-            font-size: 16px;
-            transition: all 0.3s;
-        }
-        
-        .input-group input:focus,
-        .input-group select:focus {
-            outline: none;
-            background: rgba(255, 255, 255, 0.15);
-            border-color: #81c784;
-            box-shadow: 0 0 10px rgba(129, 199, 132, 0.3);
-        }
-        
-        .bed-selector {
-            margin: 20px 0;
-        }
-        
-        .bed-grid {
-            display: grid;
-            grid-template-columns: repeat(9, 1fr);
-            gap: 10px;
-            margin-top: 10px;
-        }
-        
-        .bed-icon {
-            aspect-ratio: 1;
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid rgba(129, 199, 132, 0.3);
-            border-radius: 8px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .bed-icon.active {
-            background: rgba(129, 199, 132, 0.3);
-            border-color: #81c784;
-            box-shadow: 0 0 15px rgba(129, 199, 132, 0.5);
-        }
-        
-        .bed-icon:hover {
-            transform: scale(1.1);
-            background: rgba(129, 199, 132, 0.2);
-        }
-        
-        .bed-number {
-            position: absolute;
-            bottom: 2px;
-            right: 4px;
-            font-size: 10px;
-            color: #a5d6a7;
-        }
-        
-        .current-multiplier {
-            text-align: center;
-            margin-top: 15px;
-            font-size: 1.2em;
-            color: #81c784;
-        }
-        
-        .btn {
-            padding: 12px 24px;
-            background: linear-gradient(135deg, #43a047, #2e7d32);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
-            transition: all 0.3s;
-            margin-right: 10px;
-            margin-bottom: 10px;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-        }
-        
-        .btn:hover {
-            background: linear-gradient(135deg, #66bb6a, #43a047);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(67, 160, 71, 0.4);
-        }
-        
-        .btn-secondary {
-            background: linear-gradient(135deg, #546e7a, #37474f);
-        }
-        
-        .btn-secondary:hover {
-            background: linear-gradient(135deg, #607d8b, #546e7a);
-        }
-        
-        .btn-preset {
-            background: linear-gradient(135deg, #5e35b1, #4527a0);
-        }
-        
-        .btn-preset:hover {
-            background: linear-gradient(135deg, #7e57c2, #5e35b1);
-        }
-        
-        .result-box {
-            background: rgba(129, 199, 132, 0.1);
-            border-left: 4px solid #81c784;
-            padding: 15px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-        }
-        
-        .info-box {
-            background: rgba(100, 181, 246, 0.1);
-            border-left: 4px solid #64b5f6;
-            padding: 15px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-        }
-        
-        .warning-box {
-            background: rgba(255, 183, 77, 0.1);
-            border-left: 4px solid #ffb74d;
-            padding: 15px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-        }
-        
-        .nice-numbers-list {
-            max-height: 400px;
-            overflow-y: auto;
-            padding-right: 10px;
-        }
-        
-        .nice-number-item {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(129, 199, 132, 0.3);
-            border-radius: 6px;
-            padding: 12px;
-            margin-bottom: 10px;
-            transition: all 0.3s;
-        }
-        
-        .nice-number-item:hover {
-            background: rgba(129, 199, 132, 0.1);
-            transform: translateX(5px);
-        }
-        
-        .nice-number-item.closest {
-            background: rgba(129, 199, 132, 0.2);
-            border-color: #81c784;
-            box-shadow: 0 0 10px rgba(129, 199, 132, 0.4);
-        }
-        
-        .number-display {
-            font-size: 1.4em;
-            font-weight: bold;
-            color: #81c784;
-            margin-bottom: 5px;
-        }
-        
-        .number-details {
-            font-size: 0.9em;
-            color: #b2dfdb;
-            line-height: 1.6;
-        }
-        
-        .controls-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        /* Scrollbar styling */
-        
-         ::-webkit-scrollbar {
-            width: 8px;
-        }
-        
-         ::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 4px;
-        }
-        
-         ::-webkit-scrollbar-thumb {
-            background: rgba(129, 199, 132, 0.5);
-            border-radius: 4px;
-        }
-        
-         ::-webkit-scrollbar-thumb:hover {
-            background: rgba(129, 199, 132, 0.7);
-        }
-        
-        .example-box {
-            background: rgba(156, 39, 176, 0.1);
-            border: 1px dashed rgba(156, 39, 176, 0.5);
-            border-radius: 6px;
-            padding: 15px;
-            margin-top: 20px;
-            font-size: 0.95em;
-        }
-        
-        .calculation-steps {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 6px;
-            padding: 12px;
-            margin-top: 10px;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9em;
-        }
-    </style>
+    <title>Kalkulator 99 Nights in the Forest</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
     <div class="container">
-        <h1>🌲 99 Nights in the Forest 🌲</h1>
-        <p class="subtitle">Kalkulator Pencapaian Day & Angka Cantik</p>
+        <header>
+            <h1>🌲 Kalkulator 99 Nights in the Forest 🌲</h1>
+            <p class="subtitle">Hitung langkah dan temukan angka cantik yang dapat dicapai</p>
+        </header>
 
-        <div class="main-grid">
-            <!-- Panel Input -->
-            <div class="panel">
-                <h2>⚙️ Pengaturan</h2>
-
-                <div class="input-group">
-                    <label for="currentDay">Day Sekarang:</label>
-                    <input type="number" id="currentDay" min="0" value="99" placeholder="Masukkan day saat ini">
-                </div>
-
-                <div class="input-group">
-                    <label for="baseStep">Base Step (default 9):</label>
-                    <input type="number" id="baseStep" min="1" value="9" placeholder="Base step value">
-                </div>
-
-                <div class="bed-selector">
-                    <label>Pilih Jumlah Kasur Aktif (Multiplier):</label>
-                    <div class="bed-grid" id="bedGrid">
-                        <!-- Bed icons will be generated by JS -->
+        <main>
+            <!-- Input Section -->
+            <section class="input-section">
+                <h2>⚙️ Konfigurasi</h2>
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label for="currentDay">Current Day (D)</label>
+                        <input type="number" id="currentDay" min="0" value="120" placeholder="Contoh: 120">
+                        <span class="helper-text">Hari saat ini (≥ 0)</span>
                     </div>
-                    <div class="current-multiplier">
-                        Multiplier Saat Ini: <span id="currentMultiplier">1</span>
+
+                    <div class="input-group">
+                        <label for="baseStep">Base Step</label>
+                        <input type="number" id="baseStep" value="1" readonly disabled>
+                        <span class="helper-text">Nilai tetap (readonly)</span>
                     </div>
-                </div>
 
-                <div class="input-group">
-                    <label for="targetDay">Target Day (opsional):</label>
-                    <input type="number" id="targetDay" min="0" placeholder="Masukkan target day yang diinginkan">
-                </div>
+                    <div class="input-group">
+                        <label for="children">
+                            <span class="icon">👶</span> Children
+                        </label>
+                        <input type="number" id="children" min="0" max="4" value="4">
+                        <span class="helper-text">0 - 4</span>
+                    </div>
 
-                <div class="input-group">
-                    <label for="maxSearch">Max Search:</label>
-                    <input type="number" id="maxSearch" min="1000" value="100000" placeholder="Batas pencarian">
-                </div>
+                    <div class="input-group">
+                        <label for="beds">
+                            <span class="icon">🛏️</span> Beds
+                        </label>
+                        <input type="number" id="beds" min="0" max="4" value="4">
+                        <span class="helper-text">0 - 4</span>
+                    </div>
 
-                <div class="input-group">
-                    <label for="niceNumberType">Definisi Angka Cantik:</label>
-                    <select id="niceNumberType">
-                        <option value="all">Semua (Repeats + Palindrom + Round)</option>
-                        <option value="repeats">Repeated Digits (111, 2222, dll)</option>
-                        <option value="palindrome">Palindrom (121, 1331, dll)</option>
-                        <option value="round">Round Thousands (1000, 2000, dll)</option>
-                        <option value="custom">Custom Regex Pattern</option>
-                    </select>
-                </div>
+                    <div class="input-group">
+                        <label for="targetDay">Target Day (T) <small>(opsional)</small></label>
+                        <input type="number" id="targetDay" min="0" placeholder="Contoh: 1234">
+                        <span class="helper-text">Hari target yang ingin dicapai</span>
+                    </div>
 
-                <div class="input-group" id="customPatternGroup" style="display: none;">
-                    <label for="customPattern">Custom Pattern (Regex):</label>
-                    <input type="text" id="customPattern" placeholder="Contoh: ^[13579]+$" value="^(\\d)\\1+$">
-                </div>
+                    <div class="input-group">
+                        <label for="pattern">Pola Angka Cantik</label>
+                        <select id="pattern">
+                            <option value="all">🌟 Semua Pola</option>
+                            <option value="sameDigits">🔢 Digit Sama (1111, 2222)</option>
+                            <option value="ascending">📈 Urut Naik (1234, 2345)</option>
+                            <option value="descending">📉 Urut Turun (4321, 3210)</option>
+                            <option value="palindrome">🔄 Palindrom (1221, 1331)</option>
+                            <option value="customRegex">🛠️ Custom Regex</option>
+                        </select>
+                    </div>
 
-                <div class="controls-row">
-                    <button class="btn" onclick="calculate()">🔍 Hitung</button>
-                    <button class="btn btn-secondary" onclick="simulateRemoveBeds(1)">🛏️ Cabut 1 Kasur</button>
-                    <button class="btn btn-secondary" onclick="simulateRemoveBeds(2)">🛏️ Cabut 2 Kasur</button>
-                </div>
+                    <div class="input-group" id="customRegexGroup" style="display: none;">
+                        <label for="customRegex">Custom Regex Pattern</label>
+                        <input type="text" id="customRegex" placeholder="Contoh: ^[13579]+$">
+                        <span class="helper-text">Regex untuk angka cantik custom</span>
+                    </div>
 
-                <div class="controls-row">
-                    <button class="btn btn-preset" onclick="loadPreset(1)">📋 Preset A</button>
-                    <button class="btn btn-preset" onclick="loadPreset(2)">📋 Preset B</button>
-                    <button class="btn btn-preset" onclick="loadPreset(3)">📋 Preset C</button>
-                </div>
-
-                <div class="example-box">
-                    <strong>💡 Contoh Perhitungan:</strong><br> Day sekarang = 99, base = 9, multiplier = 2<br> → step_eff = 9 × 2 = 18<br> → Cari angka cantik ≥ 99 dimana (angka - 99) habis dibagi 18<br> → Kandidat: 117 (k=1), 333 (k=13), 999 (k=50),
-                    dll.
-                    <div class="calculation-steps">
-                        117: (117-99)/18 = 18/18 = 1 ✓<br> 333: (333-99)/18 = 234/18 = 13 ✓<br> 999: (999-99)/18 = 900/18 = 50 ✓
+                    <div class="input-group">
+                        <label for="maxSteps">Max Steps</label>
+                        <input type="number" id="maxSteps" min="100" max="10000" value="1000">
+                        <span class="helper-text">Batas pencarian (100 - 10000)</span>
                     </div>
                 </div>
-            </div>
 
-            <!-- Panel Output -->
-            <div class="panel">
-                <h2>📊 Hasil Perhitungan</h2>
-
-                <div class="info-box">
-                    <strong>📖 Aturan Main:</strong><br> Dalam game ini, kamu hanya bisa <strong>menambah</strong> day dengan kelipatan step_eff (base step × multiplier). Kamu <strong>tidak bisa mengurangi</strong> day yang sudah dicapai. Setiap kasur
-                    aktif meningkatkan multiplier, sehingga langkah yang bisa diambil menjadi lebih besar. Gunakan strategi untuk mencapai angka-angka cantik!
+                <div class="button-group">
+                    <button id="calculateBtn" class="btn btn-primary">
+                        🧮 Hitung Reachability
+                    </button>
+                    <button id="findPatternsBtn" class="btn btn-secondary">
+                        🔍 Cari Angka Cantik
+                    </button>
+                    <button id="optimizeBtn" class="btn btn-tertiary">
+                        ⚡ Optimasi Konfigurasi
+                    </button>
                 </div>
+            </section>
 
-                <div id="stepEffDisplay" class="result-box">
-                    <!-- Step effective will be displayed here -->
+            <!-- Status Display -->
+            <section class="status-section">
+                <div class="status-card">
+                    <h3>📊 Status Saat Ini</h3>
+                    <div id="statusDisplay" class="status-display">
+                        <p>Effective Step: <strong id="effectiveStepDisplay">9</strong></p>
+                        <p>Formula: baseStep(1) + children(4) + beds(4) = <strong>9</strong></p>
+                    </div>
                 </div>
+            </section>
 
-                <div id="targetResult" style="display: none;" class="result-box">
-                    <!-- Target calculation result -->
-                </div>
+            <!-- Results Section -->
+            <section class="results-section" id="resultsSection" style="display: none;">
+                <h2>📋 Hasil Perhitungan</h2>
+                <div id="resultsContent"></div>
+            </section>
 
-                <div id="niceNumbersResult">
-                    <!-- Nice numbers list -->
-                </div>
+            <!-- Pattern Results Section -->
+            <section class="pattern-results-section" id="patternResultsSection" style="display: none;">
+                <h2>✨ Angka Cantik yang Dapat Dicapai</h2>
+                <div id="patternResultsContent"></div>
+            </section>
 
-                <div class="controls-row">
-                    <button class="btn btn-secondary" onclick="copyResults()">📋 Salin Hasil</button>
-                    <button class="btn btn-secondary" onclick="exportCSV()">💾 Export CSV</button>
+            <!-- Optimization Results Section -->
+            <section class="optimization-section" id="optimizationSection" style="display: none;">
+                <h2>⚡ Hasil Optimasi</h2>
+                <div id="optimizationContent"></div>
+            </section>
+
+            <!-- Examples Section -->
+            <section class="examples-section">
+                <h2>📚 Contoh Preset</h2>
+                <div class="preset-buttons">
+                    <button class="preset-btn" onclick="loadPreset(120, 4, 4, null)">
+                        Contoh A: D=120, C=4, B=4
+                    </button>
+                    <button class="preset-btn" onclick="loadPreset(839, 4, 4, 1234)">
+                        Contoh B: D=839, T=1234
+                    </button>
+                    <button class="preset-btn" onclick="loadPreset(999, 4, 4, null)">
+                        Contoh C: D=999, C=4, B=4
+                    </button>
                 </div>
-            </div>
-        </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>🌲 99 Nights in the Forest Calculator | Konversi: 1 hari = 4 menit 30 detik</p>
+        </footer>
     </div>
 
-    <script>
-        // Global variables
-        let currentMultiplier = 1;
-        let niceNumbersData = [];
-
-        // Initialize bed grid
-        function initBedGrid() {
-            const bedGrid = document.getElementById('bedGrid');
-            bedGrid.innerHTML = '';
-
-            for (let i = 1; i <= 9; i++) {
-                const bedIcon = document.createElement('div');
-                bedIcon.className = 'bed-icon' + (i === 1 ? ' active' : '');
-                bedIcon.innerHTML = `🛏️<span class="bed-number">${i}</span>`;
-                bedIcon.onclick = () => selectBeds(i);
-                bedGrid.appendChild(bedIcon);
-            }
-        }
-
-        // Select beds (set multiplier)
-        function selectBeds(count) {
-            currentMultiplier = count;
-            document.getElementById('currentMultiplier').textContent = count;
-
-            const beds = document.querySelectorAll('.bed-icon');
-            beds.forEach((bed, index) => {
-                if (index < count) {
-                    bed.classList.add('active');
-                } else {
-                    bed.classList.remove('active');
-                }
-            });
-
-            // Auto-calculate on bed change
-            calculate();
-        }
-
-        // Load presets
-        function loadPreset(preset) {
-            switch (preset) {
-                case 1: // Preset A
-                    document.getElementById('currentDay').value = 190;
-                    document.getElementById('baseStep').value = 9;
-                    selectBeds(1);
-                    document.getElementById('targetDay').value = 777;
-                    break;
-                case 2: // Preset B
-                    document.getElementById('currentDay').value = 99;
-                    document.getElementById('baseStep').value = 9;
-                    selectBeds(2);
-                    document.getElementById('targetDay').value = '';
-                    break;
-                case 3: // Preset C
-                    document.getElementById('currentDay').value = 1141;
-                    document.getElementById('baseStep').value = 9;
-                    selectBeds(1);
-                    document.getElementById('targetDay').value = 2222;
-                    break;
-            }
-            calculate();
-        }
-
-        // Simulate removing beds
-        function simulateRemoveBeds(count) {
-            const newMultiplier = Math.max(1, currentMultiplier - count);
-            selectBeds(newMultiplier);
-        }
-
-        // Check if number is a nice number based on selected type
-        function isNiceNumber(num) {
-            const type = document.getElementById('niceNumberType').value;
-            const numStr = num.toString();
-
-            switch (type) {
-                case 'repeats':
-                    // Check for repeated digits (111, 2222, etc)
-                    return /^(\d)\1+$/.test(numStr);
-
-                case 'palindrome':
-                    // Check if palindrome
-                    return numStr === numStr.split('').reverse().join('');
-
-                case 'round':
-                    // Check for round thousands
-                    return num >= 1000 && num % 1000 === 0;
-
-                case 'custom':
-                    // Use custom regex pattern
-                    const pattern = document.getElementById('customPattern').value;
-                    try {
-                        return new RegExp(pattern).test(numStr);
-                    } catch (e) {
-                        console.error('Invalid regex pattern');
-                        return false;
-                    }
-
-                case 'all':
-                default:
-                    // Check all conditions
-                    const isRepeat = /^(\d)\1+$/.test(numStr);
-                    const isPalindrome = numStr === numStr.split('').reverse().join('');
-                    const isRound = num >= 1000 && num % 1000 === 0;
-                    return isRepeat || isPalindrome || isRound;
-            }
-        }
-
-        // Main calculation function
-        function calculate() {
-            // Get input values with validation
-            const currentDay = parseInt(document.getElementById('currentDay').value) || 0;
-            const baseStep = parseInt(document.getElementById('baseStep').value) || 9;
-            const targetDay = parseInt(document.getElementById('targetDay').value) || 0;
-            const maxSearch = parseInt(document.getElementById('maxSearch').value) || 100000;
-
-            // Validate inputs
-            if (currentDay < 0) {
-                alert('Day sekarang tidak boleh negatif!');
-                return;
-            }
-
-            if (baseStep < 1) {
-                alert('Base step minimal 1!');
-                return;
-            }
-
-            // Calculate effective step
-            const stepEff = baseStep * currentMultiplier;
-
-            // Display effective step
-            const stepEffDisplay = document.getElementById('stepEffDisplay');
-            stepEffDisplay.innerHTML = `
-                <strong>🎯 Step Efektif:</strong> ${baseStep} × ${currentMultiplier} = <strong style="color: #4caf50; font-size: 1.3em;">${stepEff}</strong><br>
-                <small>Setiap penambahan harus kelipatan ${stepEff}</small>
-            `;
-
-            // Handle target calculation
-            const targetResult = document.getElementById('targetResult');
-            if (targetDay > 0) {
-                targetResult.style.display = 'block';
-
-                if (targetDay < currentDay) {
-                    targetResult.className = 'warning-box';
-                    targetResult.innerHTML = `
-                        <strong>⚠️ Target Sudah Terlewati!</strong><br>
-                        Target ${targetDay} < Day sekarang ${currentDay}<br>
-                        Tidak bisa mundur dalam game ini.
-                    `;
-                } else {
-                    const diff = targetDay - currentDay;
-                    const remainder = diff % stepEff;
-
-                    if (remainder === 0) {
-                        const k = diff / stepEff;
-                        targetResult.className = 'result-box';
-                        targetResult.innerHTML = `
-                            <strong>✅ Target Dapat Dicapai Persis!</strong><br>
-                            Target: ${targetDay}<br>
-                            Langkah diperlukan (k): ${k}<br>
-                            Penambahan: ${k} × ${stepEff} = ${diff}<br>
-                            Total: ${currentDay} + ${diff} = ${targetDay}
-                        `;
-                    } else {
-                        const kMin = Math.ceil(diff / stepEff);
-                        const totalAfter = currentDay + (kMin * stepEff);
-                        targetResult.className = 'warning-box';
-                        targetResult.innerHTML = `
-                            <strong>⚠️ Target Tidak Dapat Dicapai Persis</strong><br>
-                            Target: ${targetDay}<br>
-                            Sisa: ${diff} mod ${stepEff} = ${remainder}<br>
-                            k_min diperlukan: ${kMin}<br>
-                            Total setelah k_min langkah: ${totalAfter}<br>
-                            <small>Overshoot: ${totalAfter - targetDay}</small>
-                        `;
-                    }
-                }
-            } else {
-                targetResult.style.display = 'none';
-            }
-
-            // Find nice numbers
-            findNiceNumbers(currentDay, stepEff, maxSearch);
-        }
-
-        // Find reachable nice numbers
-        function findNiceNumbers(currentDay, stepEff, maxSearch) {
-            niceNumbersData = [];
-            const limit = Math.min(currentDay + maxSearch, 999999); // Hard limit untuk performance
-
-            // Optimized search: check congruence first before pattern matching
-            for (let candidate = currentDay; candidate <= limit && niceNumbersData.length < 10; candidate++) {
-                // Check congruence first (cheaper operation)
-                if ((candidate - currentDay) % stepEff === 0) {
-                    // Then check if it's a nice number (more expensive)
-                    if (isNiceNumber(candidate) && candidate > currentDay) {
-                        const k = (candidate - currentDay) / stepEff;
-                        niceNumbersData.push({
-                            number: candidate,
-                            k: k,
-                            addition: k * stepEff,
-                            total: currentDay + (k * stepEff)
-                        });
-                    }
-                }
-            }
-
-            // Display results
-            const resultDiv = document.getElementById('niceNumbersResult');
-
-            if (niceNumbersData.length === 0) {
-                resultDiv.innerHTML = `
-                    <div class="warning-box">
-                        <strong>😔 Tidak Ada Angka Cantik</strong><br>
-                        Tidak ditemukan angka cantik yang dapat dicapai hingga batas ${limit}.<br>
-                        Coba naikkan Max Search atau ubah multiplier.
-                    </div>
-                `;
-            } else {
-                let html = '<h3>🌟 Angka Cantik yang Dapat Dicapai:</h3>';
-                html += '<div class="nice-numbers-list">';
-
-                niceNumbersData.forEach((item, index) => {
-                    const closestClass = index === 0 ? ' closest' : '';
-                    html += `
-                        <div class="nice-number-item${closestClass}">
-                            <div class="number-display">${item.number}</div>
-                            <div class="number-details">
-                                Langkah (k): ${item.k}<br>
-                                Penambahan: ${item.k} × ${stepEff} = ${item.addition}<br>
-                                Perhitungan: ${currentDay} + ${item.addition} = ${item.total}
-                            </div>
-                        </div>
-                    `;
-                });
-
-                html += '</div>';
-                resultDiv.innerHTML = html;
-            }
-        }
-
-        // Copy results to clipboard
-        function copyResults() {
-            let text = `99 Nights in the Forest - Hasil Perhitungan\n`;
-            text += `=====================================\n`;
-            text += `Day Sekarang: ${document.getElementById('currentDay').value}\n`;
-            text += `Base Step: ${document.getElementById('baseStep').value}\n`;
-            text += `Multiplier: ${currentMultiplier}\n`;
-            text += `Step Efektif: ${document.getElementById('baseStep').value * currentMultiplier}\n\n`;
-
-            if (niceNumbersData.length > 0) {
-                text += `Angka Cantik yang Dapat Dicapai:\n`;
-                niceNumbersData.forEach(item => {
-                    text += `- ${item.number} (k=${item.k}, +${item.addition})\n`;
-                });
-            }
-
-            navigator.clipboard.writeText(text).then(() => {
-                alert('Hasil berhasil disalin ke clipboard!');
-            });
-        }
-
-        // Export to CSV
-        function exportCSV() {
-            if (niceNumbersData.length === 0) {
-                alert('Tidak ada data untuk di-export!');
-                return;
-            }
-
-            let csv = 'Angka Cantik,Langkah (k),Penambahan,Total\n';
-            niceNumbersData.forEach(item => {
-                csv += `${item.number},${item.k},${item.addition},${item.total}\n`;
-            });
-
-            const blob = new Blob([csv], {
-                type: 'text/csv'
-            });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = '99_nights_hasil.csv';
-            a.click();
-            window.URL.revokeObjectURL(url);
-        }
-
-        // Show/hide custom pattern input
-        document.getElementById('niceNumberType').addEventListener('change', function() {
-            const customGroup = document.getElementById('customPatternGroup');
-            customGroup.style.display = this.value === 'custom' ? 'block' : 'none';
-        });
-
-        // Initialize on load
-        window.onload = function() {
-            initBedGrid();
-            calculate();
-        };
-    </script>
+    <script src="script.js"></script>
 </body>
-
 </html>
