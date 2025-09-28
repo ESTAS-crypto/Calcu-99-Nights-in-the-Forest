@@ -3,159 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌲 Kalkulator 99 Nights in the Forest 🌲</title>
+    <title>Kalkulator 99 Nights in the Forest</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Russo+One&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Animated Background Elements -->
-    <div class="forest-background">
-        <div class="firefly"></div>
-        <div class="firefly"></div>
-        <div class="firefly"></div>
-        <div class="firefly"></div>
-        <div class="firefly"></div>
-        <div class="fog"></div>
-    </div>
-
-    <!-- Main Calculator Container -->
-    <div class="calculator-container">
-        <!-- Title Section -->
-        <div class="title-section">
-            <h1 class="main-title">
-                <span class="tree-emoji">🌲</span>
-                Kalkulator 99 Nights in the Forest
-                <span class="tree-emoji">🌲</span>
-            </h1>
+    <div class="container">
+        <header>
+            <h1>🌲 Kalkulator 99 Nights in the Forest 🌲</h1>
             <p class="subtitle">Hitung langkah dan temukan angka cantik yang dapat dicapai</p>
-        </div>
+        </header>
 
-        <!-- Configuration Section -->
-        <div class="config-section">
-            <h2 class="section-title">
-                <span class="icon">⚙️</span>
-                Konfigurasi
-            </h2>
-            
-            <div class="input-group">
-                <label for="currentDay">Current Day (D):</label>
-                <input type="number" id="currentDay" value="1497" min="1">
-                <span class="tooltip">Hari saat ini dalam permainan</span>
-            </div>
+        <main>
+            <!-- Input Section -->
+            <section class="input-section">
+                <h2>⚙️ Konfigurasi</h2>
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label for="currentDay">Current Day (D)</label>
+                        <input type="number" id="currentDay" min="0" value="120" placeholder="Contoh: 120">
+                        <span class="helper-text">Hari saat ini (≥ 0)</span>
+                    </div>
 
-            <div class="input-group">
-                <label for="daysLeft">Hari saat ini (≥ 0):</label>
-                <input type="number" id="daysLeft" value="0" min="0">
-                <span class="tooltip">Jumlah hari yang tersisa</span>
-            </div>
+                    <div class="input-group">
+                        <label for="baseStep">Base Step</label>
+                        <input type="number" id="baseStep" value="1" readonly disabled>
+                        <span class="helper-text">Nilai tetap (readonly)</span>
+                    </div>
 
-            <div class="input-group">
-                <label for="baseStep">Base Step:</label>
-                <input type="number" id="baseStep" value="1" min="1">
-                <span class="tooltip">Langkah dasar untuk perhitungan</span>
-            </div>
+                    <div class="input-group">
+                        <label for="children">
+                            <span class="icon">👶</span> Children
+                        </label>
+                        <input type="number" id="children" min="0" max="4" value="4">
+                        <span class="helper-text">0 - 4</span>
+                    </div>
 
-            <div class="checkbox-group">
-                <input type="checkbox" id="readonlyMode">
-                <label for="readonlyMode">Nilai tetap (readonly)</label>
-            </div>
-        </div>
+                    <div class="input-group">
+                        <label for="beds">
+                            <span class="icon">🛏️</span> Beds
+                        </label>
+                        <input type="number" id="beds" min="0" max="4" value="4">
+                        <span class="helper-text">0 - 4</span>
+                    </div>
 
-        <!-- Children Section -->
-        <div class="children-section">
-            <h2 class="section-title">
-                <span class="icon">👶</span>
-                Children
-            </h2>
-            
-            <div class="children-grid">
-                <div class="input-group">
-                    <label for="children1">Child 1:</label>
-                    <input type="number" id="children1" value="4" min="0">
+                    <div class="input-group">
+                        <label for="targetDay">Target Day (T) <small>(opsional)</small></label>
+                        <input type="number" id="targetDay" min="0" placeholder="Contoh: 1234">
+                        <span class="helper-text">Hari target yang ingin dicapai</span>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="pattern">Pola Angka Cantik</label>
+                        <select id="pattern">
+                            <option value="all">🌟 Semua Pola</option>
+                            <option value="sameDigits">🔢 Digit Sama (1111, 2222)</option>
+                            <option value="ascending">📈 Urut Naik (1234, 2345)</option>
+                            <option value="descending">📉 Urut Turun (4321, 3210)</option>
+                            <option value="palindrome">🔄 Palindrom (1221, 1331)</option>
+                            <option value="customRegex">🛠️ Custom Regex</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group" id="customRegexGroup" style="display: none;">
+                        <label for="customRegex">Custom Regex Pattern</label>
+                        <input type="text" id="customRegex" placeholder="Contoh: ^[13579]+$">
+                        <span class="helper-text">Regex untuk angka cantik custom</span>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="maxSteps">Max Steps</label>
+                        <input type="number" id="maxSteps" min="100" max="10000" value="1000">
+                        <span class="helper-text">Batas pencarian (100 - 10000)</span>
+                    </div>
                 </div>
-                <div class="input-group">
-                    <label for="children2">Child 2:</label>
-                    <input type="number" id="children2" value="0" min="0">
+
+                <div class="button-group">
+                    <button id="calculateBtn" class="btn btn-primary">
+                        🧮 Hitung Reachability
+                    </button>
+                    <button id="findPatternsBtn" class="btn btn-secondary">
+                        🔍 Cari Angka Cantik
+                    </button>
+                    <button id="optimizeBtn" class="btn btn-tertiary">
+                        ⚡ Optimasi Konfigurasi
+                    </button>
                 </div>
-                <div class="input-group">
-                    <label for="children3">Child 3:</label>
-                    <input type="number" id="children3" value="4" min="0">
+            </section>
+
+            <!-- Status Display -->
+            <section class="status-section">
+                <div class="status-card">
+                    <h3>📊 Status Saat Ini</h3>
+                    <div id="statusDisplay" class="status-display">
+                        <p>Effective Step: <strong id="effectiveStepDisplay">9</strong></p>
+                        <p>Formula: baseStep(1) + children(4) + beds(4) = <strong>9</strong></p>
+                    </div>
                 </div>
-            </div>
-        </div>
+            </section>
 
-        <!-- Beds Section -->
-        <div class="beds-section">
-            <h2 class="section-title">
-                <span class="icon">🛏️</span>
-                Beds
-            </h2>
-            
-            <div class="beds-grid">
-                <div class="input-group">
-                    <label for="bed1">Bed 1:</label>
-                    <input type="number" id="bed1" value="4" min="0">
+            <!-- Results Section -->
+            <section class="results-section" id="resultsSection" style="display: none;">
+                <h2>📋 Hasil Perhitungan</h2>
+                <div id="resultsContent"></div>
+            </section>
+
+            <!-- Pattern Results Section -->
+            <section class="pattern-results-section" id="patternResultsSection" style="display: none;">
+                <h2>✨ Angka Cantik yang Dapat Dicapai</h2>
+                <div id="patternResultsContent"></div>
+            </section>
+
+            <!-- Optimization Results Section -->
+            <section class="optimization-section" id="optimizationSection" style="display: none;">
+                <h2>⚡ Hasil Optimasi</h2>
+                <div id="optimizationContent"></div>
+            </section>
+
+            <!-- Examples Section -->
+            <section class="examples-section">
+                <h2>📚 Contoh Preset</h2>
+                <div class="preset-buttons">
+                    <button class="preset-btn" onclick="loadPreset(120, 4, 4, null)">
+                        Contoh A: D=120, C=4, B=4
+                    </button>
+                    <button class="preset-btn" onclick="loadPreset(839, 4, 4, 1234)">
+                        Contoh B: D=839, T=1234
+                    </button>
+                    <button class="preset-btn" onclick="loadPreset(999, 4, 4, null)">
+                        Contoh C: D=999, C=4, B=4
+                    </button>
                 </div>
-                <div class="input-group">
-                    <label for="bed2">Bed 2:</label>
-                    <input type="number" id="bed2" value="0" min="0">
-                </div>
-                <div class="input-group">
-                    <label for="bed3">Bed 3:</label>
-                    <input type="number" id="bed3" value="4" min="0">
-                </div>
-            </div>
-        </div>
+            </section>
+        </main>
 
-        <!-- Target Day Section -->
-        <div class="target-section">
-            <h2 class="section-title">
-                <span class="icon">🎯</span>
-                Target Day (T)
-            </h2>
-            
-            <div class="input-group">
-                <label for="targetDay">Target Day (optional):</label>
-                <input type="number" id="targetDay" value="1551" min="1">
-                <span class="tooltip">Hari target yang ingin dicapai</span>
-            </div>
-
-            <div class="checkbox-group">
-                <input type="checkbox" id="calculateTarget">
-                <label for="calculateTarget">Hari target yg ingin dicapai</label>
-            </div>
-        </div>
-
-        <!-- Calculate Button -->
-        <button class="calculate-btn" onclick="calculate()">
-            <span class="btn-icon">🔮</span>
-            HITUNG SEKARANG
-            <span class="btn-icon">🔮</span>
-        </button>
-
-        <!-- Results Section -->
-        <div class="results-section" id="results">
-            <h2 class="section-title">
-                <span class="icon">📊</span>
-                Hasil Perhitungan
-            </h2>
-            <div class="result-content" id="resultContent">
-                <p class="waiting-text">Tekan tombol hitung untuk melihat hasil...</p>
-            </div>
-        </div>
-
-        <!-- Footer -->
-        <div class="footer">
-            <p>🌙 Created with magic in the dark forest 🌙</p>
-            <p class="version">Version 1.0.0 | Night Mode</p>
-        </div>
+        <footer>
+            <p>🌲 99 Nights in the Forest Calculator | Konversi: 1 hari = 4 menit 30 detik</p>
+        </footer>
     </div>
-
-    <!-- Sound Effects (optional) -->
-    <audio id="clickSound" preload="auto">
-        <source src="click.mp3" type="audio/mpeg">
-    </audio>
 
     <script src="script.js"></script>
 </body>
-</html>
+                            </html>
