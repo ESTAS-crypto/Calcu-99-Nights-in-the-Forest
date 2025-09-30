@@ -84,7 +84,8 @@ Calcu-99-Nights-in-the-Forest/
 
 └── README.md    # Dokumentasi
 
-🖼️ Tampilan
+<img width="787" height="902" alt="image" src="https://github.com/user-attachments/assets/1f754ee3-e377-4ca0-ae0e-50b7199ca662" />
+ Tampilan
 Header: Judul dengan tema hutan 🌲
 
 Input Section: Form konfigurasi dan tombol aksi
