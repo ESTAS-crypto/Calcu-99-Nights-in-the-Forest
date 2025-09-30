@@ -101,8 +101,5 @@ Optimization Section: Saran konfigurasi optimal
 
 Examples Section: Contoh preset & pola angka cantik
 
-📜 Lisensi
-Project ini dibuat untuk pembelajaran dan hiburan.
-Lisensi: MIT License
 
 🌲 Temukan angka cantik dalam perjalanan 99 Nights in the Forest! 🌲
