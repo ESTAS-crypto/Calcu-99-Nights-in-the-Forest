@@ -75,10 +75,15 @@ Tidak perlu server khusus, karena semua logic berjalan di sisi client (JavaScrip
 bash
 Salin kode
 Calcu-99-Nights-in-the-Forest/
+
 │── index.html   # Halaman utama
+
 │── style.css    # Styling (tema hutan malam)
+
 │── script.js    # Logic kalkulasi & pola angka
+
 └── README.md    # Dokumentasi
+
 🖼️ Tampilan
 Header: Judul dengan tema hutan 🌲
 
